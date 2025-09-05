@@ -1,19 +1,32 @@
 from rest_framework import serializers
-from olcha.models import Category, Product
+from olcha.models import Category, Product, Image
 
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         exclude = ()
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        exclude = ()
 
-
-class ProductSerializer(serializers.ModelSerializer):
+class ProductSerializers(serializers.ModelSerializer):
+    image_count = serializers.SerializerMethodField()
+    primary_image = serializers.SerializerMethodField()
+    
+    def get_primary_image(self, product):
+        if product.images:
+            image = product.images.filter(is_primary = True)
+            return image.image.url
+        return None
+    
+    def get_image_count(self, obj):
+        return obj.images.count()
     class Meta:
         model = Product
-        fields = "__all__"
+        fields = ('id','name','desc','price','stock','discount','category','image_count')
 
-class ProductDetailSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Product
-        fields = ('title','image','price', 'create_at','update_at')
+
+
+

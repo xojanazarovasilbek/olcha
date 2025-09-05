@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from olcha.models import Category, Product
-from olcha.serializers import CategorySerializer, ProductSerializer, ProductDetailSerializer
+from olcha.serializers import CategorySerializer, ProductSerializers, ProductDetailSerializer
 from rest_framework import permissions
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 
@@ -29,7 +29,7 @@ class SubcategoryListAPIView(ListAPIView):
 
 class ProductListAPIView(ListAPIView):
     queryset = Product.objects.all()
-    serializer_class = ProductSerializer
+    serializer_class = ProductSerializers
 
 
 class ProductDetailAPIView(RetrieveAPIView):
